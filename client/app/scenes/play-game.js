@@ -11,33 +11,25 @@ export default class playGame extends Phaser.Scene {
         playGame.connectToWebSockets();
 
         playGame.preparePlayGameBoard();
+        const self = this;
 
-        playGame.renderGameBoard();
+        this.renderGameBoard(self);
 
-        playGame.renderSettingGameBoard();
+        this.renderSettings(self);
     }
 
-    static renderSettingGameBoard() {
-        [1, 2, 3].forEach(frameNumber => {
-            const position = playGame.getTitlePosition(0, frameNumber - 1);
-            this.add.image(position.x, position.y, 'emptytyle');
-            const tile = this.add.sprite(position.x, position.y, 'tiles', frameNumber).setInteractive();
-            tile.on('pointerdown', () => playGame.prepareToAddNewSprite(frameNumber));
-
-        });
-    }
-
-    static renderGameBoard() {
+    renderGameBoard(self) {
         for (let i = 1; i < gameOptions.boardSize.rows; i++) {
             playGame.boardArray[i] = [];
+
             for (let j = 0; j < gameOptions.boardSize.cols; j++) {
                 const position = playGame.getTitlePosition(i, j);
-                const image = this.add.image(position.x, position.y, 'emptytyle')
+                const image = self.add.image(position.x, position.y, 'emptytyle')
                     .setInteractive();
 
                 image.on('pointerdown', () => playGame.addNewSprite(i, j, playGame.addSpriteState));
 
-                const tile = this.add.sprite(position.x, position.y, 'tiles', 2)
+                const tile = self.add.sprite(position.x, position.y, 'tiles', 2)
                     .setInteractive();
 
                 tile.visible = false;
@@ -48,6 +40,17 @@ export default class playGame extends Phaser.Scene {
                 };
             }
         }
+    }
+
+    renderSettings(self) {
+
+        [1, 2, 3].forEach(frameNumber => {
+            const position = playGame.getTitlePosition(0, frameNumber - 1);
+            self.add.image(position.x, position.y, 'emptytyle');
+            const tile = self.add.sprite(position.x, position.y, 'tiles', frameNumber).setInteractive();
+            tile.on('pointerdown', () => playGame.prepareToAddNewSprite(frameNumber));
+
+        });
     }
 
     static connectToWebSockets() {
