@@ -18,6 +18,75 @@ function preparePlayGameBoard(copyPlayGame) {
     copyPlayGame.addSpriteState = null;
 }
 
+function getHalfPosition(row, col){
+    const posX = (col + 1) + 265 * (col + 0.5);
+    const posY = (row + 1) + 180 * (row + 0.5);
+
+    return new Phaser.Geom.Point(posX, posY);
+}
+
+function firstRowPositions(row, col){
+    const posX = (col + 1) + 200 * (col + 0.5) + 100;
+    const posY = (row + 1) + 180 * (row + 0.5);
+
+    return new Phaser.Geom.Point(posX, posY);
+}
+
+function getTitlePosition(row, col) {
+    const posX = gameOptions.titleSpacing * (col + 1) + gameOptions.titleSize * (col + 0.5);
+    const posY = gameOptions.titleSpacing * (row + 1) + 180 * (row + 0.5);
+
+    return new Phaser.Geom.Point(posX, posY);
+}
+
+function getThirdPosition2(row, col){
+    const posX = 1 * (col + 1) + 200 * (col + 0.5) - 110;
+    const posY = 1 * (row + 1) + 180 * (row + 0.5);
+
+    return new Phaser.Geom.Point(posX, posY);
+}
+
+function getThirdPosition(row, col){
+    const posX = 1 * (col + 1) + 125 * (col + 0.5);
+    const posY = 1 * (row + 1) + 180 * (row + 0.5);
+
+    return new Phaser.Geom.Point(posX, posY);
+}
+
+const gameBoardMatrix = {
+    firstRow: {
+        colIndexes: [1,2,3,4],
+        otherElements: firstRowPositions,
+        firstElement: getHalfPosition,
+    },
+
+    secondRow: {
+        colIndexes: [1,2,3,4,5],
+        otherElements: getTitlePosition,
+        firstElement: null,
+    },
+
+    thirdRow: {
+        colIndexes: [1,2,3,4,5,6],
+        otherElements: getThirdPosition2,
+        firstElement: getThirdPosition
+
+    },
+    fourthRow: {
+        colIndexes: [0,1,2,3,4,5,6],
+        otherElements: getTitlePosition,
+        firstElement: null,
+    },
+    rows: {
+        1: 'firstRow',
+        2: 'secondRow',
+        3: 'thirdRow',
+        4: 'fourthRow',
+        5: 'thirdRow',
+        6: 'secondRow',
+        7: 'firstRow'
+    }
+};
 
 export default class playGame extends Phaser.Scene {
     constructor() {
@@ -36,43 +105,46 @@ export default class playGame extends Phaser.Scene {
     }
 
     renderGameBoard(self) {
-        this.renderRow(1, 1, 5, playGame.firstRowPositions, self, playGame.getHalfPosition);
-        this.renderRow(2, 1, 6, playGame.getTitlePosition, self);
-        this.renderRow(3, 1, 7, playGame.getThirdPosition2, self, playGame.getThirdPosition);
-        this.renderRow(4, 0, gameOptions.boardSize.cols, playGame.getTitlePosition, self);
-        this.renderRow(5, 1, 7, playGame.getThirdPosition2, self, playGame.getThirdPosition);
-        this.renderRow(6, 1, 6, playGame.getTitlePosition, self);
-        this.renderRow(7, 1, 5, playGame.firstRowPositions, self, playGame.getHalfPosition);
+
+        this.classFunctionForRenderRow(1, gameBoardMatrix.firstRow, self);
+        this.classFunctionForRenderRow(2, gameBoardMatrix.secondRow, self);
+        this.classFunctionForRenderRow(3, gameBoardMatrix.thirdRow, self);
+        this.classFunctionForRenderRow(4,gameBoardMatrix.fourthRow, self);
+        this.classFunctionForRenderRow(5, gameBoardMatrix.thirdRow, self);
+        this.classFunctionForRenderRow(6, gameBoardMatrix.secondRow, self);
+        this.classFunctionForRenderRow(7, gameBoardMatrix.firstRow, self);
 
     }
 
-    renderRow(rowStart, colStart, colEnd, positionFunction, self, firstCalc = null) {
+    classFunctionForRenderRow(rowStart, rowObject, self){
+        console.info('classFunctionForRenderRow', rowStart, rowObject);
         playGame.boardArray[rowStart] = [];
-        for (let j = colStart; j < colEnd; j++) {
+        rowObject.colIndexes.forEach(colIndex =>{
             let position;
-
-            if (firstCalc && j === 1) {
-                position = firstCalc(rowStart, j);
-            } else position = positionFunction(rowStart, j);
+            console.info(colIndex)
+            if (rowObject.firstElement && colIndex === 1) {
+                position = rowObject.firstElement(rowStart, colIndex);
+            } else position = rowObject.otherElements(rowStart, colIndex);
 
             const image = self.add.image(position.x, position.y, mainImage).setInteractive();
 
-            image.on('pointerdown', () => playGame.addNewSprite(rowStart, j, playGame.addSpriteState));
+            image.on('pointerdown', () => playGame.addNewSprite(rowStart, colIndex, playGame.addSpriteState));
 
             const tile = self.add.sprite(position.x, position.y, 'plants', 0).setInteractive();
 
             tile.visible = false;
 
-            playGame.boardArray[rowStart][j] = {
+            playGame.boardArray[rowStart][colIndex] = {
                 tileValue: 0,
-                tileSprite: tile,
+                tileSprite: tile
             }
-        }
+            console.info('gameBoardState', playGame.boardArray)
+        })
     }
 
     renderSettings(self) {
         [1, 2, 3].forEach(frameNumber => {
-            const position = playGame.getTitlePosition(0, frameNumber - 1);
+            const position = getTitlePosition(0, frameNumber - 1);
             self.add.image(position.x, position.y, mainImage);
             const tile = self.add.sprite(position.x, position.y, 'plants', frameNumber).setInteractive();
             tile.on('pointerdown', () => playGame.prepareToAddNewSprite(frameNumber));
@@ -82,41 +154,6 @@ export default class playGame extends Phaser.Scene {
 
     static prepareToAddNewSprite(frame){
         playGame.addSpriteState = frame;
-    }
-
-    static firstRowPositions(row, col){
-        const posX = 1 * (col + 1) + 200 * (col + 0.5) + 100;
-        const posY = 1 * (row + 1) + 180 * (row + 0.5);
-
-        return new Phaser.Geom.Point(posX, posY);
-    }
-
-    static getThirdPosition2(row, col){
-        const posX = 1 * (col + 1) + 200 * (col + 0.5) - 110;
-        const posY = 1 * (row + 1) + 180 * (row + 0.5);
-
-        return new Phaser.Geom.Point(posX, posY);
-    }
-
-    static getThirdPosition(row, col){
-        const posX = 1 * (col + 1) + 125 * (col + 0.5);
-        const posY = 1 * (row + 1) + 180 * (row + 0.5);
-
-        return new Phaser.Geom.Point(posX, posY);
-    }
-
-    static getHalfPosition(row, col){
-        const posX = 1 * (col + 1) + 265 * (col + 0.5);
-        const posY = 1 * (row + 1) + 180 * (row + 0.5);
-
-        return new Phaser.Geom.Point(posX, posY);
-    }
-
-    static getTitlePosition(row, col) {
-        const posX = gameOptions.titleSpacing * (col + 1) + gameOptions.titleSize * (col + 0.5);
-        const posY = gameOptions.titleSpacing * (row + 1) + 180 * (row + 0.5);
-
-        return new Phaser.Geom.Point(posX, posY);
     }
 
     static parseKeBoardState(boardState) {
@@ -161,9 +198,9 @@ export default class playGame extends Phaser.Scene {
             for(let i = 1; i < gameOptions.boardSize.rows; i ++){
                 switch (i) {
                     case 1:
-                        [1,2,3,4].forEach(colsNumber => {
+                        gameBoardMatrix.firstRow.colIndexes.forEach(index =>{
                             const tmpKey = 'a' + counter;
-                            board[tmpKey] = playGame.boardArray[i][colsNumber].tileValue;
+                            board[tmpKey] = playGame.boardArray[i][index].tileValue;
                             counter += 1;
                         });
                         break;
