@@ -6,7 +6,7 @@ import tree from '../../assets/tree.png';
 import bigTree from '../../assets/big-tree.png';
 import plants from '../../assets/css_sprites.png';
 import halfEmptyTile from '../../assets/half-emptytile.png';
-
+import round from '../../assets/round.png';
 
 import gameOptions from '../game-settings/game-options';
 
@@ -16,8 +16,15 @@ export default class bootGame extends Phaser.Scene {
   }
 
   preload() {
+    let progressBar = this.add.graphics();
+    let progressBox = this.add.graphics();
+
+    progressBox.fillStyle(0x22222, 0.8);
+    progressBox.fillRect(240, 270, 320, 50);
+
     this.load.image('emptytyle', emptytile);
     this.load.image('half-emptytile', halfEmptyTile);
+    this.load.image('round', round);
 
     this.load.spritesheet('tiles', tiles, {
       frameWidth: gameOptions.titleSize,
@@ -39,6 +46,15 @@ export default class bootGame extends Phaser.Scene {
       frameWidth: 128,
       frameHeight: 128
     });
+
+    this.load.on('progress', (value) => {
+      console.info(value);
+      progressBar.clear();
+      progressBar.fillStyle(0xffffff, 1);
+      progressBar.fillRect(250, 280, 300 * value, 30);
+    });
+    this.load.on('fileprogress', (file) => console.info(file.src));
+    this.load.on('colmplete', () => console.info('complete'));
 
   }
 

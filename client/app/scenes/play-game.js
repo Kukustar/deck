@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 import gameOptions from '../game-settings/game-options';
 import {Socket} from 'phoenix';
 
+const mainImage = 'round';
+
 function connectToWebSockets(copyPlayGame) {
     copyPlayGame.socket = new Socket('ws://localhost:4000/socket');
     copyPlayGame.socket.connect();
@@ -15,6 +17,7 @@ function preparePlayGameBoard(copyPlayGame) {
     copyPlayGame.settingsArray = [];
     copyPlayGame.addSpriteState = null;
 }
+
 
 export default class playGame extends Phaser.Scene {
     constructor() {
@@ -49,7 +52,7 @@ export default class playGame extends Phaser.Scene {
 
             for (let j = 0; j < gameOptions.boardSize.cols; j++) {
                 const position = playGame.getTitlePosition(i, j);
-                const image = self.add.image(position.x, position.y, 'emptytyle')
+                const image = self.add.image(position.x, position.y, mainImage)
                     .setInteractive();
 
                 image.on('pointerdown', () => playGame.addNewSprite(i, j, playGame.addSpriteState));
@@ -70,7 +73,7 @@ export default class playGame extends Phaser.Scene {
     renderThirdRow(self, rowNumber){
         playGame.boardArray[rowNumber] = [];
         const position = playGame.getThirdPosition(rowNumber, 1);
-        const image = self.add.image(position.x, position.y, 'emptytyle')
+        const image = self.add.image(position.x, position.y, mainImage)
             .setInteractive();
 
         image.on('pointerdown', () => playGame.addNewSprite(rowNumber, 1, playGame.addSpriteState));
@@ -89,7 +92,7 @@ export default class playGame extends Phaser.Scene {
 
             for (let j = 2; j < 7; j++) {
                 const position = playGame.getThirdPosition2(i, j);
-                const image = self.add.image(position.x, position.y, 'emptytyle')
+                const image = self.add.image(position.x, position.y, mainImage)
                     .setInteractive();
 
                 image.on('pointerdown', () => playGame.addNewSprite(i, j, playGame.addSpriteState));
@@ -115,7 +118,7 @@ export default class playGame extends Phaser.Scene {
 
             for (let j = 1; j < 6; j++) {
                 const position = playGame.getTitlePosition(i, j);
-                const image = self.add.image(position.x, position.y, 'emptytyle')
+                const image = self.add.image(position.x, position.y, mainImage)
                     .setInteractive();
 
                 image.on('pointerdown', () => playGame.addNewSprite(i, j, playGame.addSpriteState));
@@ -136,7 +139,7 @@ export default class playGame extends Phaser.Scene {
     renderFirstRow(self, rowNumber) {
         playGame.boardArray[rowNumber] = [];
         let position = playGame.getHalfPosition(rowNumber, 1);
-        const image2 = self.add.image(position.x, position.y, 'emptytyle').setInteractive();
+        const image2 = self.add.image(position.x, position.y, mainImage).setInteractive();
         image2.on('pointerdown', () => playGame.addNewSprite(1, 1, playGame.addSpriteState));
 
         const tile = self.add.sprite(position.x, position.y, 'plants', 0)
@@ -151,7 +154,7 @@ export default class playGame extends Phaser.Scene {
 
         [2, 3, 4].forEach(colNumber => {
             const position = playGame.firstRowPositions(rowNumber, colNumber);
-            const image = self.add.image(position.x, position.y, 'emptytyle').setInteractive();
+            const image = self.add.image(position.x, position.y, mainImage).setInteractive();
 
             image.on('pointerdown', () => playGame.addNewSprite(rowNumber, colNumber, playGame.addSpriteState));
 
@@ -170,7 +173,7 @@ export default class playGame extends Phaser.Scene {
     renderSettings(self) {
         [1, 2, 3].forEach(frameNumber => {
             const position = playGame.getTitlePosition(0, frameNumber - 1);
-            self.add.image(position.x, position.y, 'emptytyle');
+            self.add.image(position.x, position.y, mainImage);
             const tile = self.add.sprite(position.x, position.y, 'plants', frameNumber).setInteractive();
             tile.on('pointerdown', () => playGame.prepareToAddNewSprite(frameNumber));
         });
@@ -182,36 +185,36 @@ export default class playGame extends Phaser.Scene {
     }
 
     static firstRowPositions(row, col){
-        const posX = 20 * (col + 1) + 200 * (col + 0.5) + 100;
-        const posY = 20 * (row + 1) + 200 * (row + 0.5);
+        const posX = 1 * (col + 1) + 200 * (col + 0.5) + 100;
+        const posY = 1 * (row + 1) + 180 * (row + 0.5);
 
         return new Phaser.Geom.Point(posX, posY);
     }
 
     static getThirdPosition2(row, col){
-        const posX = 20 * (col + 1) + 200 * (col + 0.5) - 110;
-        const posY = 20 * (row + 1) + 200 * (row + 0.5);
+        const posX = 1 * (col + 1) + 200 * (col + 0.5) - 110;
+        const posY = 1 * (row + 1) + 180 * (row + 0.5);
 
         return new Phaser.Geom.Point(posX, posY);
     }
 
     static getThirdPosition(row, col){
-        const posX = 20 * (col + 1) + 125 * (col + 0.5);
-        const posY = 20 * (row + 1) + 200 * (row + 0.5);
+        const posX = 1 * (col + 1) + 125 * (col + 0.5);
+        const posY = 1 * (row + 1) + 180 * (row + 0.5);
 
         return new Phaser.Geom.Point(posX, posY);
     }
 
     static getHalfPosition(row, col){
-        const posX = 20 * (col + 1) + 265 * (col + 0.5);
-        const posY = 20 * (row + 1) + 200 * (row + 0.5);
+        const posX = 1 * (col + 1) + 265 * (col + 0.5);
+        const posY = 1 * (row + 1) + 180 * (row + 0.5);
 
         return new Phaser.Geom.Point(posX, posY);
     }
 
     static getTitlePosition(row, col) {
         const posX = gameOptions.titleSpacing * (col + 1) + gameOptions.titleSize * (col + 0.5);
-        const posY = gameOptions.titleSpacing * (row + 1) + gameOptions.titleSize * (row + 0.5);
+        const posY = gameOptions.titleSpacing * (row + 1) + 180 * (row + 0.5);
 
         return new Phaser.Geom.Point(posX, posY);
     }
