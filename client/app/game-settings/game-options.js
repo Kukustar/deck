@@ -2,7 +2,7 @@ export default {
   titleSize: 200,
   titleSpacing: 20,
   boardSize: {
-    rows: 5,
-    cols: 4,
+    rows: 8,
+    cols: 7,
   },
 };
