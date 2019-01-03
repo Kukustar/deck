@@ -36,138 +36,38 @@ export default class playGame extends Phaser.Scene {
     }
 
     renderGameBoard(self) {
-        this.renderFirstRow(self, 1);
-        this.renderSecondRow(self, 2);
-        this.renderThirdRow(self, 3);
-        this.renderFiveRow(self);
-        this.renderThirdRow(self, 5);
-        this.renderSecondRow(self, 6);
-        this.renderFirstRow(self, 7);
+        this.renderRow(1, 1, 5, playGame.firstRowPositions, self, playGame.getHalfPosition);
+        this.renderRow(2, 1, 6, playGame.getTitlePosition, self);
+        this.renderRow(3, 1, 7, playGame.getThirdPosition2, self, playGame.getThirdPosition);
+        this.renderRow(4, 0, gameOptions.boardSize.cols, playGame.getTitlePosition, self);
+        this.renderRow(5, 1, 7, playGame.getThirdPosition2, self, playGame.getThirdPosition);
+        this.renderRow(6, 1, 6, playGame.getTitlePosition, self);
+        this.renderRow(7, 1, 5, playGame.firstRowPositions, self, playGame.getHalfPosition);
 
     }
 
-    renderFiveRow(self){
-        playGame.boardArray[4] = [];
-        for (let i = 4; i < 5; i++) {
+    renderRow(rowStart, colStart, colEnd, positionFunction, self, firstCalc = null) {
+        playGame.boardArray[rowStart] = [];
+        for (let j = colStart; j < colEnd; j++) {
+            let position;
 
-            for (let j = 0; j < gameOptions.boardSize.cols; j++) {
-                const position = playGame.getTitlePosition(i, j);
-                const image = self.add.image(position.x, position.y, mainImage)
-                    .setInteractive();
+            if (firstCalc && j === 1) {
+                position = firstCalc(rowStart, j);
+            } else position = positionFunction(rowStart, j);
 
-                image.on('pointerdown', () => playGame.addNewSprite(i, j, playGame.addSpriteState));
-
-                const tile = self.add.sprite(position.x, position.y, 'plants', 0)
-                    .setInteractive();
-
-                tile.visible = false;
-
-                playGame.boardArray[i][j] = {
-                    tileValue: 0,
-                    tileSprite: tile,
-                };
-            }
-        }
-    }
-
-    renderThirdRow(self, rowNumber){
-        playGame.boardArray[rowNumber] = [];
-        const position = playGame.getThirdPosition(rowNumber, 1);
-        const image = self.add.image(position.x, position.y, mainImage)
-            .setInteractive();
-
-        image.on('pointerdown', () => playGame.addNewSprite(rowNumber, 1, playGame.addSpriteState));
-
-        const tile = self.add.sprite(position.x, position.y, 'plants', 0)
-            .setInteractive();
-
-        tile.visible = false;
-
-        playGame.boardArray[rowNumber][1] = {
-            tileValue: 0,
-            tileSprite: tile,
-        };
-
-        for (let i = rowNumber; i < rowNumber + 1; i++) {
-
-            for (let j = 2; j < 7; j++) {
-                const position = playGame.getThirdPosition2(i, j);
-                const image = self.add.image(position.x, position.y, mainImage)
-                    .setInteractive();
-
-                image.on('pointerdown', () => playGame.addNewSprite(i, j, playGame.addSpriteState));
-
-                const tile = self.add.sprite(position.x, position.y, 'plants', 0)
-                    .setInteractive();
-
-                tile.visible = false;
-
-                playGame.boardArray[i][j] = {
-                    tileValue: 0,
-                    tileSprite: tile,
-                };
-            }
-        }
-
-    }
-
-
-    renderSecondRow(self, rowNumber){
-        for (let i = rowNumber; i < rowNumber + 1; i++) {
-            playGame.boardArray[i] = [];
-
-            for (let j = 1; j < 6; j++) {
-                const position = playGame.getTitlePosition(i, j);
-                const image = self.add.image(position.x, position.y, mainImage)
-                    .setInteractive();
-
-                image.on('pointerdown', () => playGame.addNewSprite(i, j, playGame.addSpriteState));
-
-                const tile = self.add.sprite(position.x, position.y, 'plants', 0)
-                    .setInteractive();
-
-                tile.visible = false;
-
-                playGame.boardArray[i][j] = {
-                    tileValue: 0,
-                    tileSprite: tile,
-                };
-            }
-        }
-    }
-
-    renderFirstRow(self, rowNumber) {
-        playGame.boardArray[rowNumber] = [];
-        let position = playGame.getHalfPosition(rowNumber, 1);
-        const image2 = self.add.image(position.x, position.y, mainImage).setInteractive();
-        image2.on('pointerdown', () => playGame.addNewSprite(1, 1, playGame.addSpriteState));
-
-        const tile = self.add.sprite(position.x, position.y, 'plants', 0)
-            .setInteractive();
-
-        tile.visible = false;
-
-        playGame.boardArray[rowNumber][1] = {
-            tileValue: 0,
-            tileSprite: tile,
-        };
-
-        [2, 3, 4].forEach(colNumber => {
-            const position = playGame.firstRowPositions(rowNumber, colNumber);
             const image = self.add.image(position.x, position.y, mainImage).setInteractive();
 
-            image.on('pointerdown', () => playGame.addNewSprite(rowNumber, colNumber, playGame.addSpriteState));
+            image.on('pointerdown', () => playGame.addNewSprite(rowStart, j, playGame.addSpriteState));
 
-            const tile = self.add.sprite(position.x, position.y, 'plants', 0)
-                .setInteractive();
+            const tile = self.add.sprite(position.x, position.y, 'plants', 0).setInteractive();
 
             tile.visible = false;
-            playGame.boardArray[rowNumber][colNumber] = {
+
+            playGame.boardArray[rowStart][j] = {
                 tileValue: 0,
                 tileSprite: tile,
-            };
-        })
-
+            }
+        }
     }
 
     renderSettings(self) {
@@ -230,20 +130,19 @@ export default class playGame extends Phaser.Scene {
     }
 
     static renderNewGameBoardState(event) {
-        console.info(event);
         const boardState = playGame.parseKeBoardState(JSON.parse(event.body));
         let counter = 0;
+        console.info(boardState);
 
-        for (let i = 1; i < gameOptions.boardSize.rows; i++) {
-            for (let j = 0; j < gameOptions.boardSize.cols; j++) {
-                if(boardState[counter] > 0){
-                    playGame.renderNewObject(i,j, boardState[counter]);
-                    console.info(i,j, boardState[counter]);
-                }
-                counter+=1;
-            }
-
-        }
+        // for (let i = 1; i < gameOptions.boardSize.rows; i++) {
+        //     for (let j = 0; j < gameOptions.boardSize.cols; j++) {
+        //         if(boardState[counter] > 0){
+        //             playGame.renderNewObject(i,j, boardState[counter]);
+        //         }
+        //         counter+=1;
+        //     }
+        //
+        // }
     }
 
     static renderNewObject(i, j, frame) {
@@ -258,15 +157,61 @@ export default class playGame extends Phaser.Scene {
 
             const board = {};
             let counter = 0;
-
-            for (let i = 1; i < gameOptions.boardSize.rows; i++) {
-                for (let j = 0; j < gameOptions.boardSize.cols; j++) {
-
-                    const tmpKey = 'a' + counter;
-                    board[tmpKey] = playGame.boardArray[i][j].tileValue;
-                    counter += 1;
+            counter +=1;
+            for(let i = 1; i < gameOptions.boardSize.rows; i ++){
+                switch (i) {
+                    case 1:
+                        [1,2,3,4].forEach(colsNumber => {
+                            const tmpKey = 'a' + counter;
+                            board[tmpKey] = playGame.boardArray[i][colsNumber].tileValue;
+                            counter += 1;
+                        });
+                        break;
+                    case 2:
+                        [1,2,3,4,5].forEach(colsNumber =>{
+                            const tmpKey = 'a' + counter;
+                            board[tmpKey] = playGame.boardArray[i][colsNumber].tileValue;
+                            counter += 1;
+                        });
+                        break;
+                    case 3:
+                        [1,2,3,4,5,6].forEach(colsNumber =>{
+                            const tmpKey = 'a' + counter;
+                            board[tmpKey] = playGame.boardArray[i][colsNumber].tileValue;
+                            counter += 1;
+                        });
+                        break;
+                    case 4:
+                        [0,1,2,3,4,5,6].forEach(colsNumber =>{
+                            const tmpKey = 'a' + counter;
+                            board[tmpKey] = playGame.boardArray[i][colsNumber].tileValue;
+                            counter += 1;
+                        });
+                        break;
+                    case 5:
+                        [1,2,3,4,5,6].forEach(colsNumber =>{
+                            const tmpKey = 'a' + counter;
+                            board[tmpKey] = playGame.boardArray[i][colsNumber].tileValue;
+                            counter += 1;
+                        });
+                        break;
+                    case 6:
+                        [1,2,3,4,5].forEach(colsNumber =>{
+                            const tmpKey = 'a' + counter;
+                            board[tmpKey] = playGame.boardArray[i][colsNumber].tileValue;
+                            counter += 1;
+                        });
+                        break;
+                    case 7:
+                        [1,2,3,4].forEach(colsNumber =>{
+                            const tmpKey = 'a' + counter;
+                            board[tmpKey] = playGame.boardArray[i][colsNumber].tileValue;
+                            counter += 1;
+                        });
+                        break;
                 }
             }
+
             const msg = {body: JSON.stringify(board)};
 
             playGame.channel.push('new_msg', msg);
