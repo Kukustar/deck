@@ -1,21 +1,15 @@
 import Phaser from 'phaser';
 import gameOptions from '../game-settings/game-options';
 import {Socket} from 'phoenix';
+import GameBoard from '../game-board';
 
-const mainImage = 'round';
 
-function connectToWebSockets(copyPlayGame) {
-    copyPlayGame.socket = new Socket('ws://localhost:4000/socket');
-    copyPlayGame.socket.connect();
-    copyPlayGame.channel = copyPlayGame.socket.channel('deck:main', {});
-    copyPlayGame.channel.on('new_msg', (event) => copyPlayGame.renderNewGameBoardState(event));
-    copyPlayGame.channel.join();
-}
-
-function preparePlayGameBoard(copyPlayGame) {
-    copyPlayGame.boardArray = [];
-    copyPlayGame.settingsArray = [];
-    copyPlayGame.addSpriteState = null;
+function connectToWebSockets(scene) {
+    scene.socket = new Socket('ws://localhost:4000/socket');
+    scene.socket.connect();
+    scene.channel = scene.socket.channel('deck:main', {});
+    scene.channel.on('new_msg', (event) => scene.renderNewGameBoardState(event));
+    scene.channel.join();
 }
 
 function getHalfPosition(row, col){
@@ -40,17 +34,18 @@ function getTitlePosition(row, col) {
 }
 
 function getThirdPosition2(row, col){
-    const posX = 1 * (col + 1) + 200 * (col + 0.5) - 110;
-    const posY = 1 * (row + 1) + 180 * (row + 0.5);
+    const posX = (col + 1) + 200 * (col + 0.5) - 110;
+    const posY = (row + 1) + 180 * (row + 0.5);
 
     return new Phaser.Geom.Point(posX, posY);
 }
 
 function getThirdPosition(row, col){
-    const posX = 1 * (col + 1) + 125 * (col + 0.5);
-    const posY = 1 * (row + 1) + 180 * (row + 0.5);
+    const posX = (col + 1) + 125 * (col + 0.5);
+    const posY = (row + 1) + 180 * (row + 0.5);
 
     return new Phaser.Geom.Point(posX, posY);
+
 }
 
 const gameBoardMatrix = {
@@ -77,6 +72,10 @@ const gameBoardMatrix = {
         otherElements: getTitlePosition,
         firstElement: null,
     },
+    settingsRow: {
+        colIndexes: [1,2,3],
+        otherElements: getTitlePosition,
+    },
     rows: {
         1: 'firstRow',
         2: 'secondRow',
@@ -95,66 +94,10 @@ export default class playGame extends Phaser.Scene {
 
     create() {
         connectToWebSockets(playGame);
-
-        preparePlayGameBoard(playGame);
-
         const self = this;
-        this.renderGameBoard(self);
-
-        this.renderSettings(self);
+        const gameBoard = new GameBoard(self, playGame, gameBoardMatrix);
     }
 
-    renderGameBoard(self) {
-
-        this.classFunctionForRenderRow(1, gameBoardMatrix.firstRow, self);
-        this.classFunctionForRenderRow(2, gameBoardMatrix.secondRow, self);
-        this.classFunctionForRenderRow(3, gameBoardMatrix.thirdRow, self);
-        this.classFunctionForRenderRow(4,gameBoardMatrix.fourthRow, self);
-        this.classFunctionForRenderRow(5, gameBoardMatrix.thirdRow, self);
-        this.classFunctionForRenderRow(6, gameBoardMatrix.secondRow, self);
-        this.classFunctionForRenderRow(7, gameBoardMatrix.firstRow, self);
-
-    }
-
-    classFunctionForRenderRow(rowStart, rowObject, self){
-        console.info('classFunctionForRenderRow', rowStart, rowObject);
-        playGame.boardArray[rowStart] = [];
-        rowObject.colIndexes.forEach(colIndex =>{
-            let position;
-            console.info(colIndex)
-            if (rowObject.firstElement && colIndex === 1) {
-                position = rowObject.firstElement(rowStart, colIndex);
-            } else position = rowObject.otherElements(rowStart, colIndex);
-
-            const image = self.add.image(position.x, position.y, mainImage).setInteractive();
-
-            image.on('pointerdown', () => playGame.addNewSprite(rowStart, colIndex, playGame.addSpriteState));
-
-            const tile = self.add.sprite(position.x, position.y, 'plants', 0).setInteractive();
-
-            tile.visible = false;
-
-            playGame.boardArray[rowStart][colIndex] = {
-                tileValue: 0,
-                tileSprite: tile
-            }
-            console.info('gameBoardState', playGame.boardArray)
-        })
-    }
-
-    renderSettings(self) {
-        [1, 2, 3].forEach(frameNumber => {
-            const position = getTitlePosition(0, frameNumber - 1);
-            self.add.image(position.x, position.y, mainImage);
-            const tile = self.add.sprite(position.x, position.y, 'plants', frameNumber).setInteractive();
-            tile.on('pointerdown', () => playGame.prepareToAddNewSprite(frameNumber));
-        });
-
-    }
-
-    static prepareToAddNewSprite(frame){
-        playGame.addSpriteState = frame;
-    }
 
     static parseKeBoardState(boardState) {
         const parsedBoardState = {};
