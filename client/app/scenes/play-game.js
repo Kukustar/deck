@@ -95,7 +95,8 @@ export default class playGame extends Phaser.Scene {
     create() {
         connectToWebSockets(playGame);
         const self = this;
-        const gameBoard = new GameBoard(self, playGame, gameBoardMatrix);
+        // playGame.gameBoard =
+        playGame.gameBoard = new GameBoard(self, playGame, gameBoardMatrix);
     }
 
 
@@ -131,7 +132,10 @@ export default class playGame extends Phaser.Scene {
         playGame.boardArray[i][j].tileSprite.setFrame(frame);
     }
 
+
+
     static addNewSprite(i, j, frame) {
+        playGame.gameBoard.testFunction();
         if(frame !== null){
             playGame.renderNewObject(i, j, frame);
 

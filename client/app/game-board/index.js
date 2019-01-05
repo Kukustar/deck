@@ -8,6 +8,7 @@ export default class GameBoard {
         this.classFunctionForRenderRow = this.classFunctionForRenderRow.bind(this);
         this.renderGameBoard = this.renderGameBoard.bind(this);
         this.renderSettings = this.renderSettings.bind(this);
+        this.testFunction = this.testFunction.bind(this);
 
         this.preparePlayGameBoard(scene);
         this.renderGameBoard(self, scene, gameBoardMatrix);
@@ -30,13 +31,13 @@ export default class GameBoard {
 
             const image = self.add.image(position.x, position.y, this.mainImage).setInteractive();
 
-            image.on('pointerdown', () => playGame.addNewSprite(rowStart, colIndex, playGame.addSpriteState));
+            image.on('pointerdown', () => scene.addNewSprite(rowStart, colIndex, scene.addSpriteState));
 
             const tile = self.add.sprite(position.x, position.y, 'plants', 0).setInteractive();
 
             tile.visible = false;
 
-            playGame.boardArray[rowStart][colIndex] = {
+            scene.boardArray[rowStart][colIndex] = {
                 tileValue: 0,
                 tileSprite: tile
             };
@@ -64,4 +65,9 @@ export default class GameBoard {
         })
 
     }
+
+    testFunction(){
+        console.info('testFunction');
+    }
+
 }
