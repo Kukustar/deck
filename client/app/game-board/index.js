@@ -1,27 +1,24 @@
-import playGame from "../scenes/play-game";
-
-
 export default class GameBoard {
-    constructor(self, scene, gameBoardMatrix) {
+    constructor(self, scene) {
         this.mainImage = 'round';
-        this.preparePlayGameBoard = this.preparePlayGameBoard.bind(this);
-        this.classFunctionForRenderRow = this.classFunctionForRenderRow.bind(this);
+        this.prepareBoard = this.prepareBoard.bind(this);
+        this.renderRow = this.renderRow.bind(this);
         this.renderGameBoard = this.renderGameBoard.bind(this);
         this.renderSettings = this.renderSettings.bind(this);
-        this.testFunction = this.testFunction.bind(this);
+        this.renderNewObject = this.renderNewObject.bind(this);
 
-        this.preparePlayGameBoard(scene);
-        this.renderGameBoard(self, scene, gameBoardMatrix);
-        this.renderSettings(gameBoardMatrix.settingsRow, scene, self);
+        this.prepareBoard(scene);
+        this.renderGameBoard(self, scene);
+        this.renderSettings(scene.gameBoardMatrix.settingsRow, scene, self);
     }
 
-    preparePlayGameBoard(scene) {
+    prepareBoard(scene) {
         scene.boardArray = [];
         scene.settingsArray = [];
         scene.addSpriteState = null;
     }
 
-    classFunctionForRenderRow(rowStart, rowObject, self, scene) {
+    renderRow(rowStart, rowObject, self, scene) {
         scene.boardArray[rowStart] = [];
         rowObject.colIndexes.forEach(colIndex => {
             let position;
@@ -44,15 +41,17 @@ export default class GameBoard {
         })
     }
 
-    renderGameBoard(self, scene, gameBoardMatrix) {
+    renderGameBoard(self, scene) {
 
-        this.classFunctionForRenderRow(1, gameBoardMatrix.firstRow, self, scene);
-        this.classFunctionForRenderRow(2, gameBoardMatrix.secondRow, self, scene);
-        this.classFunctionForRenderRow(3, gameBoardMatrix.thirdRow, self, scene);
-        this.classFunctionForRenderRow(4, gameBoardMatrix.fourthRow, self, scene);
-        this.classFunctionForRenderRow(5, gameBoardMatrix.thirdRow, self, scene);
-        this.classFunctionForRenderRow(6, gameBoardMatrix.secondRow, self, scene);
-        this.classFunctionForRenderRow(7, gameBoardMatrix.firstRow, self, scene);
+
+
+        this.renderRow(1, scene.gameBoardMatrix.firstRow, self, scene);
+        this.renderRow(2, scene.gameBoardMatrix.secondRow, self, scene);
+        this.renderRow(3, scene.gameBoardMatrix.thirdRow, self, scene);
+        this.renderRow(4, scene.gameBoardMatrix.fourthRow, self, scene);
+        this.renderRow(5, scene.gameBoardMatrix.thirdRow, self, scene);
+        this.renderRow(6, scene.gameBoardMatrix.secondRow, self, scene);
+        this.renderRow(7, scene.gameBoardMatrix.firstRow, self, scene);
 
     }
 
@@ -66,8 +65,9 @@ export default class GameBoard {
 
     }
 
-    testFunction(){
-        console.info('testFunction');
+    renderNewObject(i, j, frame, scene) {
+        scene.boardArray[i][j].tileValue = frame;
+        scene.boardArray[i][j].tileSprite.visible = true;
+        scene.boardArray[i][j].tileSprite.setFrame(frame);
     }
-
 }
