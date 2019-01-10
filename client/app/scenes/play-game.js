@@ -37,27 +37,32 @@ export default class playGame extends Phaser.Scene {
         return parsedBoardState;
     }
 
-    static drawNewGameBoardState(event) {
-        const boardState = playGame.parseKeBoardState(JSON.parse(event.body));
-        let counter = 0;
-        console.info(boardState);
-        gameBoardMatrix.firstRow.colIndexes.forEach(colIndex => {
+    static drawRow(key, value, counter, boardState, gameBoardRows) {
+        console.info('value', value, value[key]);
+        console.info(gameBoardMatrix[gameBoardRows[key]]);
+        gameBoardMatrix[value].colIndexes.forEach(colIndex => {
             if(boardState[counter] > 0){
                 console.info('need to draw element');
-                playGame.gameBoard.drawNewObject(1, colIndex, boardState[counter], playGame);
+                playGame.gameBoard.drawNewObject(key, colIndex, boardState[counter], playGame);
             }
             counter +=1;
-        })
+        });
+    }
 
-        // for (let i = 1; i < gameOptions.boardSize.rows; i++) {
-        //     for (let j = 0; j < gameOptions.boardSize.cols; j++) {
-        //         if(boardState[counter] > 0){
-        //             playGame.renderNewObject(i,j, boardState[counter]);
-        //         }
-        //         counter+=1;
-        //     }
-        //
-        // }
+    static drawNewGameBoardState(event) {
+        const boardState = playGame.parseKeBoardState(JSON.parse(event.body));
+        let counter = 1;
+        playGame.gameBoardMatrix.rows.forEach(row => {
+            for(let [key, value] of Object.entries(row)){
+                gameBoardMatrix[value].colIndexes.forEach(col => {
+                    if(boardState[counter] > 0) {
+                        playGame.gameBoard.drawNewObject(key, col, boardState[counter], playGame);
+                    }
+                    counter +=1;
+                });
+            }
+        });
+
     }
 
 
@@ -78,10 +83,7 @@ export default class playGame extends Phaser.Scene {
 
     static readBoardState() {
         const board = {};
-        let counter = 0;
-
-        //not read first row (it settings)
-        counter += 1;
+        let counter = 1;
 
         playGame.gameBoardMatrix.rows.forEach(row => {
             for(let [key, value] of Object.entries(row)){
