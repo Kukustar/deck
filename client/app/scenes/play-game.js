@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-// import gameOptions from '../game-settings/game-options';
 import {Socket} from 'phoenix';
 import GameBoard from '../game-board';
 import gameBoardMatrix from '../game-board/game-board-matrix'
@@ -9,7 +8,7 @@ function connectToWebSockets(scene) {
     scene.socket = new Socket('ws://localhost:4000/socket');
     scene.socket.connect();
     scene.channel = scene.socket.channel('deck:main', {});
-    scene.channel.on('new_msg', (event) => scene.renderNewGameBoardState(event));
+    scene.channel.on('new_msg', (event) => scene.drawNewGameBoardState(event));
     scene.channel.join();
 }
 
@@ -38,10 +37,17 @@ export default class playGame extends Phaser.Scene {
         return parsedBoardState;
     }
 
-    static renderNewGameBoardState(event) {
+    static drawNewGameBoardState(event) {
         const boardState = playGame.parseKeBoardState(JSON.parse(event.body));
         let counter = 0;
         console.info(boardState);
+        gameBoardMatrix.firstRow.colIndexes.forEach(colIndex => {
+            if(boardState[counter] > 0){
+                console.info('need to draw element');
+                playGame.gameBoard.drawNewObject(1, colIndex, boardState[counter], playGame);
+            }
+            counter +=1;
+        })
 
         // for (let i = 1; i < gameOptions.boardSize.rows; i++) {
         //     for (let j = 0; j < gameOptions.boardSize.cols; j++) {
@@ -57,7 +63,7 @@ export default class playGame extends Phaser.Scene {
 
     static addNewSprite(i, j, frame) {
         if(frame !== null){
-            playGame.gameBoard.renderNewObject(i, j, frame, playGame);
+            playGame.gameBoard.drawNewObject(i, j, frame, playGame);
 
             const board = this.readBoardState();
 

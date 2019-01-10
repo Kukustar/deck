@@ -3,13 +3,13 @@ export default class GameBoard {
         this.mainImage = 'round';
         this.prepareBoard = this.prepareBoard.bind(this);
         this.renderRow = this.renderRow.bind(this);
-        this.renderGameBoard = this.renderGameBoard.bind(this);
-        this.renderSettings = this.renderSettings.bind(this);
-        this.renderNewObject = this.renderNewObject.bind(this);
+        this.drawGameBoard = this.drawGameBoard.bind(this);
+        this.drawSettings = this.drawSettings.bind(this);
+        this.drawNewObject = this.drawNewObject.bind(this);
 
         this.prepareBoard(scene);
-        this.renderGameBoard(self, scene);
-        this.renderSettings(scene.gameBoardMatrix.settingsRow, scene, self);
+        this.drawGameBoard(self, scene);
+        this.drawSettings(scene.gameBoardMatrix.settingsRow, scene, self);
     }
 
     prepareBoard(scene) {
@@ -41,9 +41,7 @@ export default class GameBoard {
         })
     }
 
-    renderGameBoard(self, scene) {
-
-
+    drawGameBoard(self, scene) {
 
         this.renderRow(1, scene.gameBoardMatrix.firstRow, self, scene);
         this.renderRow(2, scene.gameBoardMatrix.secondRow, self, scene);
@@ -55,7 +53,7 @@ export default class GameBoard {
 
     }
 
-    renderSettings(rowObject, scene, self) {
+    drawSettings(rowObject, scene, self) {
         rowObject.colIndexes.forEach(settingRow => {
             const position = rowObject.otherElements(0, settingRow - 1);
             self.add.image(position.x, position.y, 'round');
@@ -65,7 +63,7 @@ export default class GameBoard {
 
     }
 
-    renderNewObject(i, j, frame, scene) {
+    drawNewObject(i, j, frame, scene) {
         scene.boardArray[i][j].tileValue = frame;
         scene.boardArray[i][j].tileSprite.visible = true;
         scene.boardArray[i][j].tileSprite.setFrame(frame);

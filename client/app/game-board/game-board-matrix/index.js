@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import gameOptions from "../../game-settings/game-options";
 
-function getHalfPosition(row, col){
+function firstRowPosition(row, col){
     const posX = (col + 1) + 265 * (col + 0.5);
     const posY = (row + 1) + 180 * (row + 0.5);
 
@@ -15,21 +15,21 @@ function firstRowPositions(row, col){
     return new Phaser.Geom.Point(posX, posY);
 }
 
-function getTitlePosition(row, col) {
+function getStandartPosition(row, col) {
     const posX = gameOptions.titleSpacing * (col + 1) + gameOptions.titleSize * (col + 0.5);
     const posY = gameOptions.titleSpacing * (row + 1) + 180 * (row + 0.5);
 
     return new Phaser.Geom.Point(posX, posY);
 }
 
-function getThirdPosition2(row, col){
+function thirdPositions(row, col){
     const posX = (col + 1) + 200 * (col + 0.5) - 110;
     const posY = (row + 1) + 180 * (row + 0.5);
 
     return new Phaser.Geom.Point(posX, posY);
 }
 
-function getThirdPosition(row, col){
+function thirdPosition(row, col){
     const posX = (col + 1) + 125 * (col + 0.5);
     const posY = (row + 1) + 180 * (row + 0.5);
 
@@ -41,29 +41,29 @@ const gameBoardMatrix = {
     firstRow: {
         colIndexes: [1,2,3,4],
         otherElements: firstRowPositions,
-        firstElement: getHalfPosition,
+        firstElement: firstRowPosition,
     },
 
     secondRow: {
         colIndexes: [1,2,3,4,5],
-        otherElements: getTitlePosition,
+        otherElements: getStandartPosition,
         firstElement: null,
     },
 
     thirdRow: {
         colIndexes: [1,2,3,4,5,6],
-        otherElements: getThirdPosition2,
-        firstElement: getThirdPosition
+        otherElements: thirdPositions,
+        firstElement: thirdPosition
 
     },
     fourthRow: {
         colIndexes: [0,1,2,3,4,5,6],
-        otherElements: getTitlePosition,
+        otherElements: getStandartPosition,
         firstElement: null,
     },
     settingsRow: {
         colIndexes: [1,2,3],
-        otherElements: getTitlePosition,
+        otherElements: getStandartPosition,
     },
     rows: [
         {1: 'firstRow'},
