@@ -38,11 +38,8 @@ export default class playGame extends Phaser.Scene {
     }
 
     static drawRow(key, value, counter, boardState, gameBoardRows) {
-        console.info('value', value, value[key]);
-        console.info(gameBoardMatrix[gameBoardRows[key]]);
         gameBoardMatrix[value].colIndexes.forEach(colIndex => {
             if(boardState[counter] > 0){
-                console.info('need to draw element');
                 playGame.gameBoard.drawNewObject(key, colIndex, boardState[counter], playGame);
             }
             counter +=1;
@@ -65,6 +62,16 @@ export default class playGame extends Phaser.Scene {
 
     }
 
+    static changeSunPosition(prevSunPosition){
+        console.info('changeSunPosition', prevSunPosition +1);
+        console.info(playGame.sunArray);
+        playGame.sunArray[prevSunPosition].tileSprite.visible = false;
+        playGame.sunArray[prevSunPosition + 1].tileSprite.visible = true;
+        
+        playGame.sunPosition = prevSunPosition + 1;
+        
+    }
+
 
     static addNewSprite(i, j, frame) {
         if(frame !== null){
@@ -78,6 +85,9 @@ export default class playGame extends Phaser.Scene {
 
         }
         playGame.addSpriteState = null;
+        const prevSunPosition = playGame.sunPosition;
+
+        playGame.changeSunPosition(prevSunPosition);
 
     }
 

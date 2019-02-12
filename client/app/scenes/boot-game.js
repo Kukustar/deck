@@ -7,6 +7,7 @@ import bigTree from '../../assets/big-tree.png';
 import plants from '../../assets/css_sprites.png';
 import halfEmptyTile from '../../assets/half-emptytile.png';
 import round from '../../assets/round.png';
+import sun from '../../assets/sun.png';
 
 import gameOptions from '../game-settings/game-options';
 
@@ -43,6 +44,10 @@ export default class bootGame extends Phaser.Scene {
       frameHeight: 128
     });
     this.load.spritesheet('big-tree', bigTree, {
+      frameWidth: 128,
+      frameHeight: 128
+    });
+    this.load.spritesheet('sun', sun, {
       frameWidth: 128,
       frameHeight: 128
     });
