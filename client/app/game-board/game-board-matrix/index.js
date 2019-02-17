@@ -41,28 +41,24 @@ function thirdPosition(row, col){
 
 const gameBoardMatrix = {
     firstRow: {
-        // colIndexes: [1,2,3,4],
         colIndexes: [2,3,4,5],
         otherElements: firstRowPositions,
         firstElement: firstRowPosition,
     },
 
     secondRow: {
-        // colIndexes: [1,2,3,4,5],
         colIndexes: [2,3,4,5,6],
         otherElements: getStandartPosition,
         firstElement: null,
     },
 
     thirdRow: {
-        // colIndexes: [1,2,3,4,5,6],
         colIndexes: [2,3,4,5,6,7],
         otherElements: thirdPositions,
         firstElement: thirdPosition
 
     },
     fourthRow: {
-        // colIndexes: [0,1,2,3,4,5,6],
         colIndexes: [1,2,3,4,5,6,7],
         otherElements: getStandartPosition,
         firstElement: null,

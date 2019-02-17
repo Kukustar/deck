@@ -63,8 +63,6 @@ export default class playGame extends Phaser.Scene {
     }
 
     static changeSunPosition(prevSunPosition){
-        console.info('changeSunPosition', prevSunPosition +1);
-        console.info(playGame.sunArray);
         playGame.sunArray[prevSunPosition].tileSprite.visible = false;
         playGame.sunArray[prevSunPosition + 1].tileSprite.visible = true;
         
