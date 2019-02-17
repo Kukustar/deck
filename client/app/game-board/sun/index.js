@@ -9,10 +9,6 @@ const firstSunObject = {
             posY: (4 + 1) + 180 * (4 + 0.5),
         },
         {
-            posX: (1 + 1) + 200 * (1 + 0.5),
-            posY: (4 + 1) + 180 * (4 + 0.5),
-        },
-        {
             posX: (2 + 1) + 200 * (2),
             posY: (3 + 1) + 180 * (3 + 0.5),
         },
@@ -66,11 +62,139 @@ const secondSunObject = {
         }
     ],  
 };
+const thirdSunObject = {
+    coordinates: [
+        {
+            posX: (6 + 1) + 200 * (6 + 1),
+            posY: (3 + 1) + 180 * (3 + 0.5),
+        },
+        {
+            posX: (7 + 1) + 200 * (7 + 0.5),
+            posY: (4 + 1) + 180 * (4 + 0.5),
+        },
+        {
+            posX: (7 + 1) + 200 * (7 + 1),
+            posY: (5 + 1) + 180 * (5 + 0.5),
+        },
+        {
+            posX: (8 + 1) + 200 * (8 + 0.5),
+            posY: (6 + 1) + 180 * (6 + 0.5),
+        },
+        {
+            posX: (7 + 1) + 200 * (7 + 1),
+            posY: (7 + 1) + 180 * (7 + 0.5),
+        },
+        {
+            posX: (7 + 1) + 200 * (7 + 0.5),
+            posY: (8 + 1) + 180 * (8 + 0.5),
+        },
+        {
+            posX: (6 + 1) + 200 * (6 + 1),
+            posY: (9 + 1) + 180 * (9 + 0.5),
+        },
+    ],  
+};
+const fourthSunObject = {
+    coordinates: [
+        {
+            posX: (7 + 1) + 200 * (7 + 1),
+            posY: (7 + 1) + 180 * (7 + 0.5),
+        },
+        {
+            posX: (7 + 1) + 200 * (7 + 0.5),
+            posY: (8 + 1) + 180 * (8 + 0.5),
+        },
+        {
+            posX: (6 + 1) + 200 * (6 + 1),
+            posY: (9 + 1) + 180 * (9 + 0.5),
+        },
+        {
+            posX: (6 + 1) + 200 * (6 + 0.5),
+            posY: (10 + 1) + 180 * (10 + 0.5),
+        },
+        {
+            posX: (3 + 1) + 200 * (3 + 0.5),
+            posY: (10 + 1) + 180 * (10 + 0.5),
+        },
+        {
+            posX: (4 + 1) + 200 * (4 + 0.5),
+            posY: (10 + 1) + 180 * (10 + 0.5),
+        },
+        {
+            posX: (5 + 1) + 200 * (5 + 0.5),
+            posY: (10 + 1) + 180 * (10 + 0.5),
+        },
+    ],  
+};
+const fiveSunObject = {
+    coordinates: [
+        {
+            posX: (3 + 1) + 200 * (3 + 0.5),
+            posY: (10 + 1) + 180 * (10 + 0.5),
+        },
+        {
+            posX: (4 + 1) + 200 * (4 + 0.5),
+            posY: (10 + 1) + 180 * (10 + 0.5),
+        },
+        {
+            posX: (5 + 1) + 200 * (5 + 0.5),
+            posY: (10 + 1) + 180 * (10 + 0.5),
+        },
+        {
+            posX: (2 + 1) + 200 * (2 + 0.5),
+            posY: (10 + 1) + 180 * (10 + 0.5),
+        },
+        {
+            posX: (2 + 1) + 190 * (2),
+            posY: (9 + 1) + 180 * (9 + 0.5),
+        },
+        {
+            posX: (1 + 1) + 200 * (1 + 0.5),
+            posY: (8 + 1) + 180 * (8 + 0.5),
+        },
+        {
+            posX: (1 + 1) + 200 * (1),
+            posY: (7 + 1) + 180 * (7 + 0.5),
+        },
+    ],  
+};
+const sixSunObject = {
+    coordinates: [
+        {
+            posX: (2 + 1) + 190 * (2),
+            posY: (9 + 1) + 180 * (9 + 0.5),
+        },
+        {
+            posX: (1 + 1) + 200 * (1 + 0.5),
+            posY: (8 + 1) + 180 * (8 + 0.5),
+        },
+        {
+            posX: (1 + 1) + 200 * (1),
+            posY: (7 + 1) + 180 * (7 + 0.5),
+        },
+        {
+            posX: (0 + 1) + 200 * (0 + 0.5),
+            posY: (6 + 1) + 180 * (6 + 0.5),
+        },
+        {
+            posX: (1 + 1) + 190 * (1),
+            posY: (5 + 1) + 180 * (5 + 0.5),
+        },
+        {
+            posX: (1 + 1) + 200 * (1 + 0.5),
+            posY: (4 + 1) + 180 * (4 + 0.5),
+        },
+        {
+            posX: (2 + 1) + 200 * (2),
+            posY: (3 + 1) + 180 * (3 + 0.5),
+        },
+    ],  
+}
 
 export default class SunCurve {
     constructor(self, scene){
         this.sunCurvePosition = '';
-        this.sunCurves = ['firstSun', 'secondSun'];
+        this.sunCurves = ['firstSun', 'secondSun', 'thirdSun', 'fourthSun', 'fiveSun', 'sixSun'];
         this.drawSuns = this.drawSuns.bind(this);
         this.turnOnFirstSun = this.turnOnFirstSun.bind(this);
         this.getSunPosition = this.getSunPosition.bind(this);
@@ -79,6 +203,10 @@ export default class SunCurve {
         scene.sunArray = {
                 'firstSun': [],
                 'secondSun': [],
+                'thirdSun': [],
+                'fourthSun': [],
+                'fiveSun': [],
+                'sixSun': [],
             };
 
         this.drawSuns(firstSunObject, secondSunObject, self, scene);
@@ -89,6 +217,11 @@ export default class SunCurve {
     drawSuns(firstSunObject, secondSunObject, self, scene){
         firstSunObject.coordinates.forEach((sunCoordiantes, index) => this.drawSunCurve(sunCoordiantes, self, scene, 'firstSun', index));
         secondSunObject.coordinates.forEach((sunCoordiantes, index) => this.drawSunCurve(sunCoordiantes, self, scene, 'secondSun', index));
+        thirdSunObject.coordinates.forEach((sunCoordiantes, index) => this.drawSunCurve(sunCoordiantes, self, scene, 'thirdSun', index));
+        fourthSunObject.coordinates.forEach((sunCoordiantes, index) => this.drawSunCurve(sunCoordiantes, self, scene, 'fourthSun', index));
+        fiveSunObject.coordinates.forEach((sunCoordiantes, index) => this.drawSunCurve(sunCoordiantes, self, scene, 'fiveSun', index));
+        sixSunObject.coordinates.forEach((sunCoordiantes, index) => this.drawSunCurve(sunCoordiantes, self, scene, 'sixSun', index));
+        
     }
 
     turnOffSunCurve(sunKey, scene){
