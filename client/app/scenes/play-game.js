@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import {Socket} from 'phoenix';
 import GameBoard from '../game-board';
 import gameBoardMatrix from '../game-board/game-board-matrix'
+import SunCurve from '../game-board/sun';
 
 
 function connectToWebSockets(scene) {
@@ -24,6 +25,7 @@ export default class playGame extends Phaser.Scene {
 
         playGame.gameBoardMatrix = gameBoardMatrix;
         playGame.gameBoard = new GameBoard(self, playGame);
+        playGame.sunCurve = new SunCurve(self, playGame);
     }
 
 
@@ -62,15 +64,6 @@ export default class playGame extends Phaser.Scene {
 
     }
 
-    static changeSunPosition(prevSunPosition){
-        playGame.sunArray[prevSunPosition].tileSprite.visible = false;
-        playGame.sunArray[prevSunPosition + 1].tileSprite.visible = true;
-        
-        playGame.sunPosition = prevSunPosition + 1;
-        
-    }
-
-
     static addNewSprite(i, j, frame) {
         if(frame !== null){
             playGame.gameBoard.drawNewObject(i, j, frame, playGame);
@@ -83,10 +76,7 @@ export default class playGame extends Phaser.Scene {
 
         }
         playGame.addSpriteState = null;
-        const prevSunPosition = playGame.sunPosition;
-
-        playGame.changeSunPosition(prevSunPosition);
-
+        playGame.sunCurve.switchSun(playGame);
     }
 
     static readBoardState() {

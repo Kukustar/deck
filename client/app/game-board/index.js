@@ -16,10 +16,10 @@ export default class GameBoard {
         scene.boardArray = [];
         scene.settingsArray = [];
         scene.addSpriteState = null;
-        scene.sunArray = {
-            'firstSun': [],
-            'secondSun': [],
-        };
+        // scene.sunArray = {
+        //     'firstSun': [],
+        //     'secondSun': [],
+        // };
         scene.sunPosition = 0;
     }
 
@@ -47,27 +47,27 @@ export default class GameBoard {
     }
 
 
-    renderSun(sunObject, self, scene, key, index){
+    // renderSun(sunObject, self, scene, key, index){
 
-        const position = new Phaser.Geom.Point(sunObject['posX'], sunObject['posY']);
+    //     const position = new Phaser.Geom.Point(sunObject['posX'], sunObject['posY']);
 
-        // self.add.image(position.x, position.y, this.mainImage).setInteractive();
+    //     // self.add.image(position.x, position.y, this.mainImage).setInteractive();
 
-        const sunTile = self.add.sprite(position.x, position.y, 'sun', 0).setInteractive();
+    //     const sunTile = self.add.sprite(position.x, position.y, 'sun', 0).setInteractive();
 
-        sunTile.visible = false;
+    //     sunTile.visible = false;
 
-        scene.sunArray[key][index] = {
-            tileValue: 0,
-            tileSprite: sunTile
-        }
-        scene.sunArray[key].push(
-            {
-                tileValue: 0,
-                tileSprite: sunTile
-            }
-        )   
-    }
+    //     scene.sunArray[key][index] = {
+    //         tileValue: 0,
+    //         tileSprite: sunTile
+    //     }
+    //     scene.sunArray[key].push(
+    //         {
+    //             tileValue: 0,
+    //             tileSprite: sunTile
+    //         }
+    //     )   
+    // }
 
     drawGameBoard(self, scene) {
 
@@ -102,77 +102,77 @@ export default class GameBoard {
             }
         ];
 
-        const firstSunObject = {
-            coordinates: [
-                {
-                    posX: (1 + 1) + 190 * (1),
-                    posY: (5 + 1) + 180 * (5 + 0.5),
-                },
-                {
-                    posX: (1 + 1) + 200 * (1 + 0.5),
-                    posY: (4 + 1) + 180 * (4 + 0.5),
-                },
-                {
-                    posX: (1 + 1) + 200 * (1 + 0.5),
-                    posY: (4 + 1) + 180 * (4 + 0.5),
-                },
-                {
-                    posX: (2 + 1) + 200 * (2),
-                    posY: (3 + 1) + 180 * (3 + 0.5),
-                },
-                {
-                    posX: (2 + 1) + 200 * (2 + 0.5),
-                    posY: (2 + 1) + 180 * (2 + 0.5),
-                },
-                {
-                    posX: (3 + 1) + 200 * (3 + 0.5),
-                    posY: (2 + 1) + 180 * (2 + 0.5),
-                },
-                {
-                    posX: (4 + 1) + 200 * (4 + 0.5),
-                    posY: (2 + 1) + 180 * (2 + 0.5),
-                },
-                {
-                    posX: (5 + 1) + 200 * (5 + 0.5),
-                    posY: (2 + 1) + 180 * (2 + 0.5),
-                },
-            ],  
-        };
-        const secondSunObject = {
-            coordinates: [
-                {
-                    posX: (3 + 1) + 200 * (3 + 0.5),
-                    posY: (2 + 1) + 180 * (2 + 0.5),
-                },
-                {
-                    posX: (4 + 1) + 200 * (4 + 0.5),
-                    posY: (2 + 1) + 180 * (2 + 0.5),
-                },
-                {
-                    posX: (5 + 1) + 200 * (5 + 0.5),
-                    posY: (2 + 1) + 180 * (2 + 0.5),
-                },
-                {
-                    posX: (6 + 1) + 200 * (6 + 0.5),
-                    posY: (2 + 1) + 180 * (2 + 0.5),
-                },
-                {
-                    posX: (6 + 1) + 200 * (6 + 1),
-                    posY: (3 + 1) + 180 * (3 + 0.5),
-                },
-                {
-                    posX: (7 + 1) + 200 * (7 + 0.5),
-                    posY: (4 + 1) + 180 * (4 + 0.5),
-                },
-                {
-                    posX: (7 + 1) + 200 * (7 + 1),
-                    posY: (5 + 1) + 180 * (5 + 0.5),
-                }
-            ],  
-        };
+        // const firstSunObject = {
+        //     coordinates: [
+        //         {
+        //             posX: (1 + 1) + 190 * (1),
+        //             posY: (5 + 1) + 180 * (5 + 0.5),
+        //         },
+        //         {
+        //             posX: (1 + 1) + 200 * (1 + 0.5),
+        //             posY: (4 + 1) + 180 * (4 + 0.5),
+        //         },
+        //         {
+        //             posX: (1 + 1) + 200 * (1 + 0.5),
+        //             posY: (4 + 1) + 180 * (4 + 0.5),
+        //         },
+        //         {
+        //             posX: (2 + 1) + 200 * (2),
+        //             posY: (3 + 1) + 180 * (3 + 0.5),
+        //         },
+        //         {
+        //             posX: (2 + 1) + 200 * (2 + 0.5),
+        //             posY: (2 + 1) + 180 * (2 + 0.5),
+        //         },
+        //         {
+        //             posX: (3 + 1) + 200 * (3 + 0.5),
+        //             posY: (2 + 1) + 180 * (2 + 0.5),
+        //         },
+        //         {
+        //             posX: (4 + 1) + 200 * (4 + 0.5),
+        //             posY: (2 + 1) + 180 * (2 + 0.5),
+        //         },
+        //         {
+        //             posX: (5 + 1) + 200 * (5 + 0.5),
+        //             posY: (2 + 1) + 180 * (2 + 0.5),
+        //         },
+        //     ],  
+        // };
+        // const secondSunObject = {
+        //     coordinates: [
+        //         {
+        //             posX: (3 + 1) + 200 * (3 + 0.5),
+        //             posY: (2 + 1) + 180 * (2 + 0.5),
+        //         },
+        //         {
+        //             posX: (4 + 1) + 200 * (4 + 0.5),
+        //             posY: (2 + 1) + 180 * (2 + 0.5),
+        //         },
+        //         {
+        //             posX: (5 + 1) + 200 * (5 + 0.5),
+        //             posY: (2 + 1) + 180 * (2 + 0.5),
+        //         },
+        //         {
+        //             posX: (6 + 1) + 200 * (6 + 0.5),
+        //             posY: (2 + 1) + 180 * (2 + 0.5),
+        //         },
+        //         {
+        //             posX: (6 + 1) + 200 * (6 + 1),
+        //             posY: (3 + 1) + 180 * (3 + 0.5),
+        //         },
+        //         {
+        //             posX: (7 + 1) + 200 * (7 + 0.5),
+        //             posY: (4 + 1) + 180 * (4 + 0.5),
+        //         },
+        //         {
+        //             posX: (7 + 1) + 200 * (7 + 1),
+        //             posY: (5 + 1) + 180 * (5 + 0.5),
+        //         }
+        //     ],  
+        // };
         
-        firstSunObject.coordinates.forEach((sunCoordiantes, index) => this.renderSun(sunCoordiantes, self, scene, 'firstSun', index));
-        secondSunObject.coordinates.forEach((sunCoordiantes, index) => this.renderSun(sunCoordiantes, self, scene, 'secondSun', index))
+        // firstSunObject.coordinates.forEach((sunCoordiantes, index) => this.renderSun(sunCoordiantes, self, scene, 'firstSun', index));
+        // secondSunObject.coordinates.forEach((sunCoordiantes, index) => this.renderSun(sunCoordiantes, self, scene, 'secondSun', index))
 
 
         // this.renderSun();
@@ -194,9 +194,7 @@ export default class GameBoard {
         this.renderRow(8, scene.gameBoardMatrix.secondRow, self, scene);
         this.renderRow(9, scene.gameBoardMatrix.firstRow, self, scene);
 
-        scene.sunArray['firstSun'].forEach(item => item.tileSprite.visible = true);
-        // scene.sunArray['secondSun'].forEach(item => item.tileSprite.visible = true);
-
+        // scene.sunArray['firstSun'].forEach(item => item.tileSprite.visible = true);
 
     }
 
